@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Варшава — Звіт Лютий / Березень 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
@@ -37,7 +38,6 @@
     overflow-x: hidden;
   }
 
-  /* BG noise texture */
   body::before {
     content: '';
     position: fixed;
@@ -48,7 +48,6 @@
     opacity: 0.4;
   }
 
-  /* HERO */
   .hero {
     position: relative;
     padding: 80px 40px 60px;
@@ -105,7 +104,6 @@
   .hero-verdict .vl { font-size: 11px; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
   .hero-verdict .vt { font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 700; color: var(--accent); line-height: 1.4; }
 
-  /* NAV */
   nav {
     position: sticky;
     top: 0;
@@ -135,7 +133,6 @@
   }
   nav a:hover { color: var(--text); }
 
-  /* MAIN */
   main { max-width: 1100px; margin: 0 auto; padding: 60px 40px; }
 
   .section { margin-bottom: 80px; }
@@ -161,7 +158,6 @@
     letter-spacing: -0.01em;
   }
 
-  /* KPI GRID */
   .kpi-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -202,7 +198,6 @@
   .dn { color: var(--accent3); }
   .kpi-from { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-  /* CHARTS LAYOUT */
   .charts-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   .chart-card {
     background: var(--bg2);
@@ -216,9 +211,7 @@
   .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
   .legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
 
-  /* SOURCES BAR CHART */
   .source-list { display: flex; flex-direction: column; gap: 12px; }
-  .source-row { }
   .source-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
   .source-name { font-size: 13px; color: var(--text); }
   .source-nums { font-size: 12px; color: var(--muted); }
@@ -227,7 +220,6 @@
   .source-fill-wrap { display: flex; height: 100%; gap: 2px; }
   .sf { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
 
-  /* SEGMENT CARDS */
   .seg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .seg-card {
     background: var(--bg2);
@@ -248,7 +240,6 @@
   .seg-conv .cv-val { font-family: 'Unbounded', sans-serif; font-size: 18px; font-weight: 700; }
   .seg-conv .cv-delta { font-size: 11px; margin-top: 2px; }
 
-  /* CPL TABLE */
   .cpl-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; }
   .cpl-card {
     background: var(--bg2);
@@ -260,7 +251,6 @@
   .cpl-val { font-family: 'Unbounded', sans-serif; font-size: 22px; font-weight: 700; }
   .cpl-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-  /* META LEADS */
   .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .meta-card {
     background: var(--bg2);
@@ -277,7 +267,6 @@
   .meta-form-row .fn { color: var(--muted); }
   .meta-form-row .fv { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; }
 
-  /* INSIGHTS */
   .insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .insight-card {
     background: var(--bg2);
@@ -292,7 +281,6 @@
   .insight-body .ih { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
   .insight-body .ip { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
-  /* FOOTER */
   footer {
     border-top: 0.5px solid var(--border);
     padding: 32px 40px;
@@ -306,7 +294,6 @@
   }
   footer strong { font-family: 'Unbounded', sans-serif; font-size: 11px; color: var(--accent); }
 
-  /* SCROLL REVEAL */
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.5s ease, transform 0.5s ease; }
   .reveal.visible { opacity: 1; transform: none; }
 
@@ -322,7 +309,6 @@
 </style>
 </head>
 <body>
-
 <header>
   <div class="hero">
     <div>
@@ -349,8 +335,6 @@
 </header>
 
 <main>
-
-  <!-- KPI -->
   <section class="section reveal" id="kpi">
     <div class="section-head">
       <span class="section-num">01</span>
@@ -384,7 +368,6 @@
     </div>
   </section>
 
-  <!-- CHANNELS -->
   <section class="section reveal" id="channels">
     <div class="section-head">
       <span class="section-num">02</span>
@@ -417,7 +400,6 @@
       </div>
     </div>
 
-    <!-- Conversion table inline -->
     <div class="chart-card" style="margin-top:16px;">
       <div class="chart-card-title" style="margin-bottom:16px;">Детальна таблиця конверсії</div>
       <table style="width:100%;border-collapse:collapse;font-size:13px;">
@@ -479,7 +461,6 @@
     </div>
   </section>
 
-  <!-- VISITS / SOURCES -->
   <section class="section reveal" id="visits">
     <div class="section-head">
       <span class="section-num">03</span>
@@ -534,7 +515,6 @@
     </div>
   </section>
 
-  <!-- SEGMENTS -->
   <section class="section reveal" id="segments">
     <div class="section-head">
       <span class="section-num">04</span>
@@ -568,7 +548,6 @@
     </div>
   </section>
 
-  <!-- META LEADS -->
   <section class="section reveal" id="meta">
     <div class="section-head">
       <span class="section-num">05</span>
@@ -619,7 +598,6 @@
     </div>
   </section>
 
-  <!-- INSIGHTS -->
   <section class="section reveal" id="insights">
     <div class="section-head">
       <span class="section-num">06</span>
@@ -665,12 +643,11 @@
         <div class="insight-icon">💰</div>
         <div class="insight-body">
           <div class="ih">CPL виріс, але ефективність зросла</div>
-          <div class="ip">18 zł → 22 zł blended CPL, але більше записів і візитів. Дивитись не на CPL, а на CPL-запис і доходимість до візиту.</div>
+          <div class="ip">18 zł → 44 zł blended CPL, але більше записів і візитів. Дивитись не на CPL, а на CPL-запис і доходимість до візиту.</div>
         </div>
       </div>
     </div>
   </section>
-
 </main>
 
 <footer>
@@ -679,17 +656,20 @@
 </footer>
 
 <script>
-  // SCROLL REVEAL
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
   }, { threshold: 0.08 });
   revealEls.forEach(el => io.observe(el));
 
   const darkGrid = 'rgba(255,255,255,0.07)';
   const darkText = '#666688';
 
-  // CHANNEL CHART
   new Chart(document.getElementById('channelChart'), {
     type: 'bar',
     data: {
@@ -698,11 +678,12 @@
         { label: 'Лют зверн.', data: [407, 458, 646], backgroundColor: '#7c5cfc', borderRadius: 3 },
         { label: 'Бер зверн.', data: [480, 349, 669], backgroundColor: '#4a30c0', borderRadius: 3 },
         { label: 'Лют записи', data: [314, 57, 182], backgroundColor: '#00e5a0', borderRadius: 3 },
-        { label: 'Бер записи', data: [369, 82, 228], backgroundColor: '#008f60', borderRadius: 3 },
+        { label: 'Бер записи', data: [369, 82, 228], backgroundColor: '#008f60', borderRadius: 3 }
       ]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: {
         x: { grid: { color: darkGrid }, ticks: { color: darkText, font: { size: 12 } } },
@@ -711,27 +692,26 @@
     }
   });
 
-  // CONVERSION CHART
   new Chart(document.getElementById('convChart'), {
     type: 'bar',
     data: {
       labels: ['КЦ', 'Лід форма', 'Чат', 'Разом'],
       datasets: [
         { label: 'Лютий', data: [77.1, 12.4, 28.2, 36.6], backgroundColor: '#ff6b4a', borderRadius: 3 },
-        { label: 'Березень', data: [76.9, 23.6, 34.0, 45.0], backgroundColor: '#fbbf24', borderRadius: 3 },
+        { label: 'Березень', data: [76.9, 23.6, 34.0, 45.0], backgroundColor: '#fbbf24', borderRadius: 3 }
       ]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: {
         x: { grid: { color: darkGrid }, ticks: { color: darkText, font: { size: 12 } } },
-        y: { grid: { color: darkGrid }, ticks: { color: darkText, font: { size: 11 }, callback: v => v + '%' }, suggestedMax: 90 }
+        y: { grid: { color: darkGrid }, ticks: { color: darkText, font: { size: 11 }, callback: value => value + '%' }, suggestedMax: 90 }
       }
     }
   });
 
-  // SOURCES TOP-3 CHART
   new Chart(document.getElementById('sourcesChart'), {
     type: 'line',
     data: {
@@ -740,27 +720,40 @@
         {
           label: 'Рекомендація пацієнта',
           data: [134, 162],
-          borderColor: '#00e5a0', backgroundColor: 'rgba(0,229,160,0.08)',
-          pointBackgroundColor: '#00e5a0', pointRadius: 6, tension: 0.3, fill: true
+          borderColor: '#00e5a0',
+          backgroundColor: 'rgba(0,229,160,0.08)',
+          pointBackgroundColor: '#00e5a0',
+          pointRadius: 6,
+          tension: 0.3,
+          fill: true
         },
         {
           label: 'Instagram',
           data: [122, 139],
-          borderColor: '#7c5cfc', backgroundColor: 'rgba(124,92,252,0.08)',
-          pointBackgroundColor: '#7c5cfc', pointRadius: 6, tension: 0.3, fill: true,
+          borderColor: '#7c5cfc',
+          backgroundColor: 'rgba(124,92,252,0.08)',
+          pointBackgroundColor: '#7c5cfc',
+          pointRadius: 6,
+          tension: 0.3,
+          fill: true,
           borderDash: [4, 3]
         },
         {
           label: 'Google',
           data: [56, 74],
-          borderColor: '#fbbf24', backgroundColor: 'rgba(251,191,36,0.08)',
-          pointBackgroundColor: '#fbbf24', pointRadius: 6, tension: 0.3, fill: true,
+          borderColor: '#fbbf24',
+          backgroundColor: 'rgba(251,191,36,0.08)',
+          pointBackgroundColor: '#fbbf24',
+          pointRadius: 6,
+          tension: 0.3,
+          fill: true,
           borderDash: [2, 2]
-        },
+        }
       ]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: {
           display: true,

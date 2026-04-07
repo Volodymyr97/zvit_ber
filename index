@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Варшава — Звіт Лютий / Березень 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #18181f;
+    --surface: #1e1e28;
+    --border: rgba(255,255,255,0.07);
+    --accent: #00e5a0;
+    --accent2: #7c5cfc;
+    --accent3: #ff6b4a;
+    --accent4: #fbbf24;
+    --text: #f0f0f5;
+    --muted: #8888a0;
+    --card-r: 16px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* BG noise texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 80px 40px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .hero-eyebrow {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent); }
+
+  .hero h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(32px, 5vw, 64px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero-meta {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 16px;
+  }
+
+  .hero-verdict {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-left: 2px solid var(--accent);
+    border-radius: var(--card-r);
+    padding: 20px 24px;
+    min-width: 240px;
+    max-width: 280px;
+  }
+  .hero-verdict .vl { font-size: 11px; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .hero-verdict .vt { font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 700; color: var(--accent); line-height: 1.4; }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  nav ul {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    gap: 0;
+    list-style: none;
+  }
+  nav a {
+    display: block;
+    padding: 14px 20px;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    font-weight: 500;
+  }
+  nav a:hover { color: var(--text); }
+
+  /* MAIN */
+  main { max-width: 1100px; margin: 0 auto; padding: 60px 40px; }
+
+  .section { margin-bottom: 80px; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .section-num {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .section-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  /* KPI GRID */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .kpi {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--card-r);
+    padding: 20px 20px 18px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .kpi:hover { border-color: rgba(255,255,255,0.15); }
+  .kpi::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .kpi.green::after { background: var(--accent); }
+  .kpi.purple::after { background: var(--accent2); }
+  .kpi.orange::after { background: var(--accent3); }
+  .kpi.yellow::after { background: var(--accent4); }
+
+  .kpi-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+  .kpi-main { display: flex; align-items: baseline; gap: 6px; }
+  .kpi-val { font-family: 'Unbounded', sans-serif; font-size: 28px; font-weight: 700; }
+  .kpi.green .kpi-val { color: var(--accent); }
+  .kpi.purple .kpi-val { color: var(--accent2); }
+  .kpi.orange .kpi-val { color: var(--accent3); }
+  .kpi.yellow .kpi-val { color: var(--accent4); }
+  .kpi-unit { font-size: 14px; color: var(--muted); }
+  .kpi-change { font-size: 12px; margin-top: 6px; }
+  .up { color: var(--accent); }
+  .dn { color: var(--accent3); }
+  .kpi-from { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* CHARTS LAYOUT */
+  .charts-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .chart-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--card-r);
+    padding: 24px;
+  }
+  .chart-card-title { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .chart-card-sub { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+  .legend-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+  /* SOURCES BAR CHART */
+  .source-list { display: flex; flex-direction: column; gap: 12px; }
+  .source-row { }
+  .source-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+  .source-name { font-size: 13px; color: var(--text); }
+  .source-nums { font-size: 12px; color: var(--muted); }
+  .source-nums strong { color: var(--text); font-weight: 500; }
+  .source-track { background: var(--surface); border-radius: 4px; height: 6px; overflow: hidden; }
+  .source-fill-wrap { display: flex; height: 100%; gap: 2px; }
+  .sf { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+
+  /* SEGMENT CARDS */
+  .seg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .seg-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--card-r);
+    padding: 24px;
+  }
+  .seg-icon { font-size: 20px; margin-bottom: 12px; }
+  .seg-title { font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 16px; }
+  .seg-row-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; }
+  .seg-row-item:last-child { border-bottom: none; }
+  .seg-row-item .slabel { color: var(--muted); }
+  .seg-row-item .svals { display: flex; gap: 10px; }
+  .feb { color: var(--muted); }
+  .mar { color: var(--text); font-weight: 500; }
+  .seg-conv { margin-top: 16px; padding: 12px 16px; border-radius: 10px; background: var(--surface); display: flex; justify-content: space-between; align-items: center; }
+  .seg-conv .cv-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .seg-conv .cv-val { font-family: 'Unbounded', sans-serif; font-size: 18px; font-weight: 700; }
+  .seg-conv .cv-delta { font-size: 11px; margin-top: 2px; }
+
+  /* CPL TABLE */
+  .cpl-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+  .cpl-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--card-r);
+    padding: 20px;
+  }
+  .cpl-label { font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+  .cpl-val { font-family: 'Unbounded', sans-serif; font-size: 22px; font-weight: 700; }
+  .cpl-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* META LEADS */
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .meta-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--card-r);
+    padding: 24px;
+  }
+  .meta-month { font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .meta-total { font-size: 36px; font-weight: 300; margin-bottom: 20px; }
+  .meta-total span { font-family: 'Unbounded', sans-serif; font-size: 36px; font-weight: 700; }
+  .meta-forms { display: flex; flex-direction: column; gap: 8px; }
+  .meta-form-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 6px 0; border-bottom: 0.5px solid var(--border); }
+  .meta-form-row:last-child { border-bottom: none; }
+  .meta-form-row .fn { color: var(--muted); }
+  .meta-form-row .fv { font-family: 'Unbounded', sans-serif; font-size: 13px; font-weight: 700; }
+
+  /* INSIGHTS */
+  .insights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .insight-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--card-r);
+    padding: 20px 22px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .insight-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+  .insight-body .ih { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .insight-body .ip { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* FOOTER */
+  footer {
+    border-top: 0.5px solid var(--border);
+    padding: 32px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer strong { font-family: 'Unbounded', sans-serif; font-size: 11px; color: var(--accent); }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; padding: 48px 20px 40px; }
+    .hero-verdict { max-width: 100%; }
+    nav ul { padding: 0 16px; gap: 0; overflow-x: auto; }
+    main { padding: 40px 20px; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .charts-2col, .seg-grid, .meta-grid, .insights-grid, .cpl-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 10px; padding: 24px 20px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow">Аналітичний звіт · Польща</div>
+      <h1>Варшава<br><em>Лют — Бер</em><br>2026</h1>
+      <p class="hero-meta">Звернення · Записи · Конверсія · Візити · Реклама</p>
+    </div>
+    <div class="hero-verdict">
+      <div class="vl">Головний висновок</div>
+      <div class="vt">Березень сильніший не за рахунок обсягу — а за рахунок якості обробки та закриття в запис</div>
+    </div>
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="#kpi">KPI</a></li>
+      <li><a href="#channels">Канали</a></li>
+      <li><a href="#visits">Візити</a></li>
+      <li><a href="#segments">Сегменти</a></li>
+      <li><a href="#meta">Meta Leads</a></li>
+      <li><a href="#insights">Висновки</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <!-- KPI -->
+  <section class="section reveal" id="kpi">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <span class="section-title">Ключові показники</span>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi green">
+        <div class="kpi-label">Первинних візитів</div>
+        <div class="kpi-main"><span class="kpi-val">474</span></div>
+        <div class="kpi-change up">+59 (+14.2%)</div>
+        <div class="kpi-from">← 415 у лютому</div>
+      </div>
+      <div class="kpi purple">
+        <div class="kpi-label">Записів</div>
+        <div class="kpi-main"><span class="kpi-val">675</span></div>
+        <div class="kpi-change up">+122 (+22.1%)</div>
+        <div class="kpi-from">← 553 у лютому</div>
+      </div>
+      <div class="kpi orange">
+        <div class="kpi-label">Загальна конверсія</div>
+        <div class="kpi-main"><span class="kpi-val">45.0</span><span class="kpi-unit">%</span></div>
+        <div class="kpi-change up">+8.4 п.п.</div>
+        <div class="kpi-from">← 36.6% у лютому</div>
+      </div>
+      <div class="kpi yellow">
+        <div class="kpi-label">Звернень</div>
+        <div class="kpi-main"><span class="kpi-val">1 499</span></div>
+        <div class="kpi-change dn">−11 (−0.8%)</div>
+        <div class="kpi-from">← 1 511 у лютому</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHANNELS -->
+  <section class="section reveal" id="channels">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <span class="section-title">Канали: звернення, записи, конверсія</span>
+    </div>
+    <div class="charts-2col">
+      <div class="chart-card">
+        <div class="chart-card-title">Звернення та записи по каналах</div>
+        <div class="chart-card-sub">Абсолютні значення, лютий vs березень</div>
+        <div class="legend-row">
+          <div class="legend-item"><span class="legend-dot" style="background:#7c5cfc;"></span>Лют зверн.</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#4a30c0;"></span>Бер зверн.</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#00e5a0;"></span>Лют записи</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#008f60;"></span>Бер записи</div>
+        </div>
+        <div style="position:relative;width:100%;height:240px;">
+          <canvas id="channelChart" role="img" aria-label="Звернення та записи по каналах КЦ, Лід форма, Чат">КЦ: зверн 407/480, записи 314/369. Лід форма: зверн 458/349, записи 57/82. Чат: зверн 646/669, записи 182/228.</canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-title">Конверсія по каналах (%)</div>
+        <div class="chart-card-sub">Звернення → запис, лютий vs березень</div>
+        <div class="legend-row">
+          <div class="legend-item"><span class="legend-dot" style="background:#ff6b4a;"></span>Лютий</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#fbbf24;"></span>Березень</div>
+        </div>
+        <div style="position:relative;width:100%;height:240px;">
+          <canvas id="convChart" role="img" aria-label="Конверсія по каналах">КЦ 77%/77%. Лід форма 12%/24%. Чат 28%/34%. Разом 37%/45%.</canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conversion table inline -->
+    <div class="chart-card" style="margin-top:16px;">
+      <div class="chart-card-title" style="margin-bottom:16px;">Детальна таблиця конверсії</div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead>
+          <tr style="border-bottom:0.5px solid var(--border);">
+            <th style="text-align:left;padding:8px 10px;color:var(--muted);font-weight:400;font-size:11px;text-transform:uppercase;letter-spacing:.06em;">Канал</th>
+            <th style="text-align:right;padding:8px 10px;color:var(--muted);font-weight:400;font-size:11px;">Зверн. лют</th>
+            <th style="text-align:right;padding:8px 10px;color:var(--muted);font-weight:400;font-size:11px;">Зверн. бер</th>
+            <th style="text-align:right;padding:8px 10px;color:var(--muted);font-weight:400;font-size:11px;">Записи лют</th>
+            <th style="text-align:right;padding:8px 10px;color:var(--muted);font-weight:400;font-size:11px;">Записи бер</th>
+            <th style="text-align:right;padding:8px 10px;color:var(--muted);font-weight:400;font-size:11px;">Конв. лют</th>
+            <th style="text-align:right;padding:8px 10px;color:var(--muted);font-weight:400;font-size:11px;">Конв. бер</th>
+            <th style="text-align:right;padding:8px 10px;color:var(--muted);font-weight:400;font-size:11px;">Δ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:0.5px solid var(--border);">
+            <td style="padding:10px;font-weight:500;">КЦ</td>
+            <td style="padding:10px;text-align:right;color:var(--muted);">406.9</td>
+            <td style="padding:10px;text-align:right;">480.0</td>
+            <td style="padding:10px;text-align:right;color:var(--muted);">313.7</td>
+            <td style="padding:10px;text-align:right;">369.3</td>
+            <td style="padding:10px;text-align:right;color:var(--muted);">77.1%</td>
+            <td style="padding:10px;text-align:right;color:var(--accent);">76.9%</td>
+            <td style="padding:10px;text-align:right;color:var(--muted);">−0.2</td>
+          </tr>
+          <tr style="border-bottom:0.5px solid var(--border);">
+            <td style="padding:10px;font-weight:500;">Лід форма</td>
+            <td style="padding:10px;text-align:right;color:var(--muted);">457.6</td>
+            <td style="padding:10px;text-align:right;">348.6</td>
+            <td style="padding:10px;text-align:right;color:var(--muted);">56.9</td>
+            <td style="padding:10px;text-align:right;">82.3</td>
+            <td style="padding:10px;text-align:right;color:var(--muted);">12.4%</td>
+            <td style="padding:10px;text-align:right;color:var(--accent);">23.6%</td>
+            <td style="padding:10px;text-align:right;color:var(--accent);">+11.2</td>
+          </tr>
+          <tr style="border-bottom:0.5px solid var(--border);">
+            <td style="padding:10px;font-weight:500;">Чат</td>
+            <td style="padding:10px;text-align:right;color:var(--muted);">646.3</td>
+            <td style="padding:10px;text-align:right;">668.7</td>
+            <td style="padding:10px;text-align:right;color:var(--muted);">182.4</td>
+            <td style="padding:10px;text-align:right;">227.6</td>
+            <td style="padding:10px;text-align:right;color:var(--muted);">28.2%</td>
+            <td style="padding:10px;text-align:right;color:var(--accent);">34.0%</td>
+            <td style="padding:10px;text-align:right;color:var(--accent);">+5.8</td>
+          </tr>
+          <tr style="background:var(--surface);">
+            <td style="padding:10px;font-weight:700;font-family:'Unbounded',sans-serif;font-size:12px;">Разом</td>
+            <td style="padding:10px;text-align:right;color:var(--muted);">1 510.7</td>
+            <td style="padding:10px;text-align:right;font-weight:500;">1 499.3</td>
+            <td style="padding:10px;text-align:right;color:var(--muted);">553.0</td>
+            <td style="padding:10px;text-align:right;font-weight:500;color:var(--accent);">675.1</td>
+            <td style="padding:10px;text-align:right;color:var(--muted);">36.6%</td>
+            <td style="padding:10px;text-align:right;font-weight:500;color:var(--accent);">45.0%</td>
+            <td style="padding:10px;text-align:right;color:var(--accent);font-weight:500;">+8.4</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- VISITS / SOURCES -->
+  <section class="section reveal" id="visits">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <span class="section-title">Первинні візити: джерела</span>
+    </div>
+    <div class="charts-2col">
+      <div class="chart-card">
+        <div class="chart-card-title">Джерела за кількістю візитів — березень</div>
+        <div class="chart-card-sub">Порівняння з лютим (лютий → березень)</div>
+        <div class="source-list" style="margin-top:8px;">
+          <div class="source-row">
+            <div class="source-top"><span class="source-name">Рекомендація пацієнта</span><span class="source-nums">134 → <strong>162</strong></span></div>
+            <div class="source-track"><div class="source-fill-wrap"><div class="sf" style="width:82.6%;background:#7c5cfc;"></div><div class="sf" style="width:17.4%;background:#00e5a0;opacity:.5;"></div></div></div>
+          </div>
+          <div class="source-row">
+            <div class="source-top"><span class="source-name">Instagram</span><span class="source-nums">122 → <strong>139</strong></span></div>
+            <div class="source-track"><div class="source-fill-wrap"><div class="sf" style="width:85.8%;background:#7c5cfc;"></div><div class="sf" style="width:14.2%;background:#00e5a0;opacity:.5;"></div></div></div>
+          </div>
+          <div class="source-row">
+            <div class="source-top"><span class="source-name">Google</span><span class="source-nums">56 → <strong>74</strong></span></div>
+            <div class="source-track"><div class="source-fill-wrap"><div class="sf" style="width:45.7%;background:#7c5cfc;"></div><div class="sf" style="width:32.1%;background:#00e5a0;opacity:.6;"></div></div></div>
+          </div>
+          <div class="source-row">
+            <div class="source-top"><span class="source-name">Рекомендація співробітника</span><span class="source-nums">28 → <strong class="dn">21</strong></span></div>
+            <div class="source-track"><div class="source-fill-wrap"><div class="sf" style="width:17.3%;background:#ff6b4a;opacity:.7;"></div></div></div>
+          </div>
+          <div class="source-row">
+            <div class="source-top"><span class="source-name">Ін. мед. заклад / лікар</span><span class="source-nums">14 → <strong>17</strong></span></div>
+            <div class="source-track"><div class="source-fill-wrap"><div class="sf" style="width:10.5%;background:#fbbf24;"></div></div></div>
+          </div>
+          <div class="source-row">
+            <div class="source-top"><span class="source-name">Facebook</span><span class="source-nums">9 → <strong>14</strong></span></div>
+            <div class="source-track"><div class="source-fill-wrap"><div class="sf" style="width:8.6%;background:#7c5cfc;opacity:.6;"></div></div></div>
+          </div>
+          <div class="source-row">
+            <div class="source-top"><span class="source-name">Зовнішня реклама</span><span class="source-nums">9 → <strong>13</strong></span></div>
+            <div class="source-track"><div class="source-fill-wrap"><div class="sf" style="width:8%;background:#00e5a0;opacity:.5;"></div></div></div>
+          </div>
+          <div class="source-row">
+            <div class="source-top"><span class="source-name">Чат</span><span class="source-nums">20 → <strong class="dn">12</strong></span></div>
+            <div class="source-track"><div class="source-fill-wrap"><div class="sf" style="width:7.4%;background:#ff6b4a;opacity:.7;"></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-title">Динаміка топ-3 джерел</div>
+        <div class="chart-card-sub">Лютий → березень, фактичні первинні візити</div>
+        <div style="position:relative;width:100%;height:260px;">
+          <canvas id="sourcesChart" role="img" aria-label="Динаміка топ-3 джерел первинних візитів">Рекомендації: 134→162. Instagram: 122→139. Google: 56→74.</canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEGMENTS -->
+  <section class="section reveal" id="segments">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <span class="section-title">Сегменти: дитинство vs доросле</span>
+    </div>
+    <div class="seg-grid">
+      <div class="seg-card">
+        <div class="seg-icon">👶</div>
+        <div class="seg-title">Дитинство</div>
+        <div class="seg-row-item"><span class="slabel">Звернення</span><span class="svals"><span class="feb">291</span><span>→</span><span class="mar">347</span></span></div>
+        <div class="seg-row-item"><span class="slabel">Записи</span><span class="svals"><span class="feb">123</span><span>→</span><span class="mar">179</span></span></div>
+        <div class="seg-row-item"><span class="slabel">Δ звернень</span><span class="mar up">+56 (+19.3%)</span></div>
+        <div class="seg-row-item"><span class="slabel">Δ записів</span><span class="mar up">+56 (+46%)</span></div>
+        <div class="seg-conv">
+          <div><div class="cv-label">Конверсія</div><div class="cv-delta up">+9.4 п.п.</div></div>
+          <div style="text-align:right;"><div class="cv-val" style="color:var(--accent);">51.6%</div><div class="cv-delta" style="color:var(--muted);">← 42.2%</div></div>
+        </div>
+      </div>
+      <div class="seg-card">
+        <div class="seg-icon">🦷</div>
+        <div class="seg-title">Доросле</div>
+        <div class="seg-row-item"><span class="slabel">Звернення</span><span class="svals"><span class="feb">1 220</span><span>→</span><span class="mar">1 152</span></span></div>
+        <div class="seg-row-item"><span class="slabel">Записи</span><span class="svals"><span class="feb">430</span><span>→</span><span class="mar">496</span></span></div>
+        <div class="seg-row-item"><span class="slabel">Δ звернень</span><span class="mar dn">−68 (−5.6%)</span></div>
+        <div class="seg-row-item"><span class="slabel">Δ записів</span><span class="mar up">+66 (+15.3%)</span></div>
+        <div class="seg-conv">
+          <div><div class="cv-label">Конверсія</div><div class="cv-delta up">+7.7 п.п.</div></div>
+          <div style="text-align:right;"><div class="cv-val" style="color:var(--accent2);">43.0%</div><div class="cv-delta" style="color:var(--muted);">← 35.3%</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- META LEADS -->
+  <section class="section reveal" id="meta">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <span class="section-title">Meta Leads та CPL</span>
+    </div>
+
+    <div class="cpl-grid" style="margin-bottom:24px;">
+      <div class="cpl-card">
+        <div class="cpl-label">Raw Leads лютий</div>
+        <div class="cpl-val" style="color:var(--muted);">239</div>
+        <div class="cpl-sub">покриття spend-звіту: 48.2%</div>
+      </div>
+      <div class="cpl-card">
+        <div class="cpl-label">Raw Leads березень</div>
+        <div class="cpl-val" style="color:var(--accent);">244</div>
+        <div class="cpl-sub">покриття spend-звіту: 72.2%</div>
+      </div>
+      <div class="cpl-card">
+        <div class="cpl-label">Blended CPL лют → бер</div>
+        <div class="cpl-val"><span style="color:var(--muted);font-size:16px;">18 zł</span> → <span style="color:var(--accent3);">44 zł</span></div>
+        <div class="cpl-sub">Дорожчий, але якісніший трафік</div>
+      </div>
+    </div>
+
+    <div class="meta-grid">
+      <div class="meta-card">
+        <div class="meta-month" style="color:var(--muted);">Лютий</div>
+        <div class="meta-total">Raw: <span>239</span></div>
+        <div class="meta-forms">
+          <div class="meta-form-row"><span class="fn">Kids Warsaw</span><span class="fv" style="color:var(--accent);">106</span></div>
+          <div class="meta-form-row"><span class="fn">Елайнери Warsaw</span><span class="fv">39</span></div>
+          <div class="meta-form-row"><span class="fn">All on 4 Warsaw</span><span class="fv">32</span></div>
+          <div class="meta-form-row"><span class="fn">Комплексне лікування Європа</span><span class="fv">32</span></div>
+          <div class="meta-form-row"><span class="fn">Елайнери Європа</span><span class="fv">26</span></div>
+        </div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-month" style="color:var(--accent);">Березень</div>
+        <div class="meta-total">Raw: <span style="color:var(--accent);">244</span></div>
+        <div class="meta-forms">
+          <div class="meta-form-row"><span class="fn">Kids Warsaw</span><span class="fv" style="color:var(--accent);">112</span></div>
+          <div class="meta-form-row"><span class="fn">All on 4 Warsaw</span><span class="fv">39</span></div>
+          <div class="meta-form-row"><span class="fn">Вініри Європа</span><span class="fv">37</span></div>
+          <div class="meta-form-row"><span class="fn">Jdental Warsaw</span><span class="fv">33</span></div>
+          <div class="meta-form-row"><span class="fn">Імплантація загальна</span><span class="fv">23</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSIGHTS -->
+  <section class="section reveal" id="insights">
+    <div class="section-head">
+      <span class="section-num">06</span>
+      <span class="section-title">Бізнес-висновки</span>
+    </div>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <div class="insight-icon">📈</div>
+        <div class="insight-body">
+          <div class="ih">Березень сильніший за якістю, не за об'ємом</div>
+          <div class="ip">Звернення майже не змінились (−11), але записи виросли на 122, а конверсія стрибнула з 36.6% до 45.0%.</div>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">📞</div>
+        <div class="insight-body">
+          <div class="ih">КЦ — найстабільніший канал</div>
+          <div class="ip">Найбільше записів, конверсія стабільно ~77%. КЦ тримає всю систему.</div>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">🚀</div>
+        <div class="insight-body">
+          <div class="ih">Лід форма — найбільший прогрес</div>
+          <div class="ip">Конверсія майже подвоїлась: 12.4% → 23.6%. Сигнал кращої якості лідів або закриття команди.</div>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">💬</div>
+        <div class="insight-body">
+          <div class="ih">Чат краще записує, гірше доводить до візиту</div>
+          <div class="ip">По записах чат ріс (28% → 34%), але фактичні візити з чату просіли: 20 → 12. Gap між записом і візитом.</div>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">❤️</div>
+        <div class="insight-body">
+          <div class="ih">Рекомендації + Instagram + Google — основа Варшави</div>
+          <div class="ip">Три канали дали 375 з 474 візитів. Варшава не залежить від однієї реклами — бренд, сарафан і пошук разом.</div>
+        </div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon">💰</div>
+        <div class="insight-body">
+          <div class="ih">CPL виріс, але ефективність зросла</div>
+          <div class="ip">18 zł → 44 zł blended CPL, але більше записів і візитів. Дивитись не на CPL, а на CPL-запис і доходимість до візиту.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div><strong>Warsaw Report</strong> · Лютий — Березень 2026</div>
+  <div>Дані: КЦ, Лід форма, Чат · Meta Leads · Первинні пацієнти</div>
+</footer>
+
+<script>
+  // SCROLL REVEAL
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  revealEls.forEach(el => io.observe(el));
+
+  const darkGrid = 'rgba(255,255,255,0.07)';
+  const darkText = '#666688';
+
+  // CHANNEL CHART
+  new Chart(document.getElementById('channelChart'), {
+    type: 'bar',
+    data: {
+      labels: ['КЦ', 'Лід форма', 'Чат'],
+      datasets: [
+        { label: 'Лют зверн.', data: [407, 458, 646], backgroundColor: '#7c5cfc', borderRadius: 3 },
+        { label: 'Бер зверн.', data: [480, 349, 669], backgroundColor: '#4a30c0', borderRadius: 3 },
+        { label: 'Лют записи', data: [314, 57, 182], backgroundColor: '#00e5a0', borderRadius: 3 },
+        { label: 'Бер записи', data: [369, 82, 228], backgroundColor: '#008f60', borderRadius: 3 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: darkGrid }, ticks: { color: darkText, font: { size: 12 } } },
+        y: { grid: { color: darkGrid }, ticks: { color: darkText, font: { size: 11 } } }
+      }
+    }
+  });
+
+  // CONVERSION CHART
+  new Chart(document.getElementById('convChart'), {
+    type: 'bar',
+    data: {
+      labels: ['КЦ', 'Лід форма', 'Чат', 'Разом'],
+      datasets: [
+        { label: 'Лютий', data: [77.1, 12.4, 28.2, 36.6], backgroundColor: '#ff6b4a', borderRadius: 3 },
+        { label: 'Березень', data: [76.9, 23.6, 34.0, 45.0], backgroundColor: '#fbbf24', borderRadius: 3 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: darkGrid }, ticks: { color: darkText, font: { size: 12 } } },
+        y: { grid: { color: darkGrid }, ticks: { color: darkText, font: { size: 11 }, callback: v => v + '%' }, suggestedMax: 90 }
+      }
+    }
+  });
+
+  // SOURCES TOP-3 CHART
+  new Chart(document.getElementById('sourcesChart'), {
+    type: 'line',
+    data: {
+      labels: ['Лютий', 'Березень'],
+      datasets: [
+        {
+          label: 'Рекомендація пацієнта',
+          data: [134, 162],
+          borderColor: '#00e5a0', backgroundColor: 'rgba(0,229,160,0.08)',
+          pointBackgroundColor: '#00e5a0', pointRadius: 6, tension: 0.3, fill: true
+        },
+        {
+          label: 'Instagram',
+          data: [122, 139],
+          borderColor: '#7c5cfc', backgroundColor: 'rgba(124,92,252,0.08)',
+          pointBackgroundColor: '#7c5cfc', pointRadius: 6, tension: 0.3, fill: true,
+          borderDash: [4, 3]
+        },
+        {
+          label: 'Google',
+          data: [56, 74],
+          borderColor: '#fbbf24', backgroundColor: 'rgba(251,191,36,0.08)',
+          pointBackgroundColor: '#fbbf24', pointRadius: 6, tension: 0.3, fill: true,
+          borderDash: [2, 2]
+        },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          labels: { color: darkText, font: { size: 11 }, boxWidth: 10, boxHeight: 10 }
+        }
+      },
+      scales: {
+        x: { grid: { color: darkGrid }, ticks: { color: darkText } },
+        y: { grid: { color: darkGrid }, ticks: { color: darkText }, suggestedMin: 40 }
+      }
+    }
+  });
+</script>
+</body>
+</html>
